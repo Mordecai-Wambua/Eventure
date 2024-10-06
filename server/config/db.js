@@ -1,7 +1,8 @@
 // Creates connection and configures Database
-const dbClient = require('mongoose');
-require('dotenv').config();
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 class Database {
   constructor() {
@@ -10,26 +11,26 @@ class Database {
 
   async connect() {
     try {
-        this.connection = await dbClient.connect(process.env.MONGO_URI);
-        console.log('Connected to Database successfully :)');
-        console.log('Connected to database:', this.connection.connection.name);
+      this.connection = await mongoose.connect(process.env.MONGO_URI);
+      console.log('Connected to Database successfully :)');
+      console.log('Connected to database:', this.connection.connection.name);
     } catch (error) {
-        console.error('Error connecting to Database :( :', error.message);
-        process.exit(1);
+      console.error('Error connecting to Database :( :', error.message);
+      process.exit(1);
     }
   }
 
   async disconnect() {
     try {
-        if (this.connection) {
-            await dbClient.disconnect();
-            console.log('Disconnected to Database successfully');
-        }
+      if (this.connection) {
+        await mongoose.disconnect();
+        console.log('Disconnected to Database successfully');
+      }
     } catch (error) {
-        console.error('Error disconnecting from Database:', error.message);
+      console.error('Error disconnecting from Database:', error.message);
     }
   }
 }
 
-module.exports = new Database();
-
+const database = new Database();
+export default database;

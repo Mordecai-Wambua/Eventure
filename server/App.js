@@ -1,13 +1,19 @@
 // Main entry point
 import express from 'express';
-import router from './routes/router.js';
+import home from './routes/router.js';
+import adminRouter from './routes/adminRoutes.js';
+import organizerRouter from './routes/organizerRoutes.js';
 import database from './config/db.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.json());
-app.use('/', router);
+
+// Routes
+app.use('/', home);
+app.use('/api/admin', adminRouter);
+app.use('/api/organizer', organizerRouter);
 
 // Connect to MongoDB
 (async () => {

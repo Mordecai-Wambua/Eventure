@@ -16,7 +16,15 @@ export const authJWT = (req, res, next) => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
     req.user = decoded;
+
+     // Checks  the role and adds it to req.user
+     if (decoded.role === 'admin') {
+        req.user.isAdmin = true;
+      } else if (decoded.role === 'organizer') {
+        req.user.isOrganizer = true;
+      }
     next();
+
   } catch (error) {
     res.status(400).json({ message: 'Invalid token' });
   }

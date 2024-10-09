@@ -1,8 +1,9 @@
 import { Router } from 'express';
 import { authJWT } from '../middleware/authMiddleware.js';
-import { authorizeOrganizer } from '../middleware/roleMiddleware.js'; // Import organizer authorizaton middleware
+import { authorizeOrganizer } from '../middleware/roleMiddleware.js';
 import { handleLoginAuth } from '../controllers/authController.js';
 import { handleUserRegistration } from '../controllers/regController.js';
+import { getProfile } from '../controllers/getProfile.js';
 
 const organizerRouter = Router();
 
@@ -12,12 +13,16 @@ organizerRouter.get('/', authJWT, authorizeOrganizer, (req, res) => {
 });
 
 // Auth for user login
-organizerRouter.post('/organizer-login', handleLoginAuth, authJWT, authorizeOrganizer, (req, res) => {
+organizerRouter.post('/login', handleLoginAuth, authJWT, (req, res) => {
   res.send('Organizer login');
 });
 
-organizerRouter.post('/organizer-register', handleUserRegistration, authJWT, authorizeOrganizer, (req, res) => {
-  res.send('Organizer registration')
-})
+// Register organizer
+organizerRouter.post('/register', handleUserRegistration, (req, res) => {
+  res.send('Organizer registration');
+});
+
+// Get profile by UserID
+organizerRouter.get('/profile', authJWT, authorizeOrganizer, getProfile);
 
 export default organizerRouter;

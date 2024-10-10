@@ -13,12 +13,12 @@ adminRouter.get('/', authJWT, authorizeAdmin, (req, res) => {
 });
 
 // Handles admin login
-adminRouter.post('/admin-login', handleLoginAuth, (req, res) => {
+adminRouter.post('/login', handleLoginAuth, (req, res) => {
   res.send('Admin Login');
 });
 
 // Handle admin registration
-adminRouter.post('/admin-register', handleAdminRegistration, (req, res) => {
+adminRouter.post('/register', handleAdminRegistration, (req, res) => {
   res.send('Admin Registration');
 });
 

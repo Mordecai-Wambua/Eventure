@@ -75,7 +75,7 @@ export const handleAdminRegistration = async () => {
     const adminUser = new User({
       email: ADMIN_EMAIL,
       password: hashedAdminPassword,
-      name: 'Admin User',  // Hardcoded admin name
+      name: 'Eventure Admin',  // Hardcoded admin name
       role: 'admin',  // Assign 'admin' role
     });
 

@@ -4,6 +4,7 @@ import { authJWT } from '../middleware/authMiddleware.js';
 import { authorizeAdmin } from '../middleware/roleMiddleware.js';
 import { handleLoginAuth } from '../controllers/authController.js';
 import { handleAdminRegistration } from '../controllers/regController.js';
+import { getProfile } from '../controllers/getProfile.js';
 
 const adminRouter = Router();
 
@@ -23,6 +24,6 @@ adminRouter.post('/register', handleAdminRegistration, (req, res) => {
 });
 
 // Get Admin profile by UserID
-organizerRouter.get('/profile', authJWT, authorizeAdmin, getProfile);
+adminRouter.get('/profile', authJWT, authorizeAdmin, getProfile);
 
 export default adminRouter;

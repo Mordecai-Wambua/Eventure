@@ -22,4 +22,7 @@ adminRouter.post('/register', handleAdminRegistration, (req, res) => {
   res.send('Admin Registration');
 });
 
+// Get Admin profile by UserID
+organizerRouter.get('/profile', authJWT, authorizeAdmin, getProfile);
+
 export default adminRouter;

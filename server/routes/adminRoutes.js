@@ -1,3 +1,4 @@
+// Admin routes
 import { Router } from 'express';
 import { authJWT } from '../middleware/authMiddleware.js';
 import { authorizeAdmin } from '../middleware/roleMiddleware.js';
@@ -11,13 +12,14 @@ adminRouter.get('/', authJWT, authorizeAdmin, (req, res) => {
   res.send('Admin Home');
 });
 
-// Handle admin login
-adminRouter.post('/admin-login', authJWT, authorizeAdmin, handleLoginAuth, (req, res) => {
-  res.send('Admin Login')
+// Handles admin login
+adminRouter.post('/admin-login', handleLoginAuth, (req, res) => {
+  res.send('Admin Login');
 });
 
-adminRouter.post('/admin-register', authJWT, authorizeAdmin, handleAdminRegistration, (req, res) => {
-  res.send('Admin Registration')
-})
+// Handle admin registration
+adminRouter.post('/admin-register', handleAdminRegistration, (req, res) => {
+  res.send('Admin Registration');
+});
 
 export default adminRouter;

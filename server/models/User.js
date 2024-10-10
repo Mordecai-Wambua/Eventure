@@ -12,17 +12,17 @@ const UserSchema = new Schema({
 });
 
 // password hashing
-UserSchema.pre('save', function (next) {
-  if (!this.isModified('password')) {
-    return next();
-  }
-  try {
-    this.password = bcrypt.hashSync(this.password, 10);
-    next();
-  } catch (error) {
-    next(error);
-  }
-});
+// UserSchema.pre('save', function (next) {
+//   if (!this.isModified('password')) {
+//     return next();
+//   }
+//   try {
+//     this.password = bcrypt.hashSync(this.password, 10);
+//     next();
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 const User = mongoose.model('User', UserSchema);
 export default User;

@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -20,17 +21,11 @@ if (!JWT_SECRET) {
 
 app.use(express.json());
 
-// Token generation route test
-app.get('/generate-token', (req, res) => {
-  const payload = { id: '123', role: 'user' };
-  const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
-  res.json({ token });
-});
-
-// Protected test route
-app.get('/protected', authJWT, (req, res) => {
-  res.json({ message: 'This is a protected route', user: req.user });
-});
+// Use CORS middleware
+app.use(cors({
+  origin: 'http://localhost:5173', // Allow requests from this origin
+  credentials: true, // handles cookies or sessions
+}));
 
 // Existing routes
 app.use('/', home);

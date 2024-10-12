@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Calendar } from 'lucide-react';
 
 const FooterSection = ({ title, items }) => (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../styles/login.css';
 
 const Login = () => {
@@ -93,7 +93,7 @@ const Login = () => {
           </div>
           <div className='register'>
             <span>
-              Don't have an account? <a href='#'>Register</a>
+              Don&apos;t have an account? <a href='#'>Register</a>
             </span>
           </div>
         </form>

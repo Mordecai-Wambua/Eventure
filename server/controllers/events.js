@@ -2,7 +2,7 @@ import Event from '../models/Event.js';
 
 export async function getEvents(req, res) {
   try {
-    const events = await Event.find();
+    const events = await Event.find().select('-__v');
 
     res.status(200).json(events);
   } catch (error) {

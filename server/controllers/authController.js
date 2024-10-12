@@ -25,6 +25,11 @@ export const handleLoginAuth = async (req, res) => {
       return res.status(401).json({ message: 'Invalid password!' });
     }
 
+    // Check if user exists
+    if (!user && !isPasswordValid) {
+        return res.status(401).json({ message: 'User does not exist!' });
+    }
+
     // Generate JWT token with user id and role
     const token = jwt.sign(
       { id: user._id, role: user.role }, // Embed role in the token
@@ -32,14 +37,8 @@ export const handleLoginAuth = async (req, res) => {
       { expiresIn: '1h' } // Token expiry time
     );
 
-    // Send token and user ID back to the client
-    res.status(200).json({
-      token,
-      user: {
-        id: user._id, // Send the user ID to the frontend
-        email: user.email, // You can send more user data if necessary
-      }
-    });
+    // Send token back to client
+    res.status(200).json({ token });
 
   } catch (error) {
     console.error('Login Error:', error);

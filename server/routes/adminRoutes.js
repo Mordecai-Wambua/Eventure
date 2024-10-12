@@ -29,9 +29,7 @@ adminRouter.post('/login', handleLoginAuth, (req, res) => {
 });
 
 // Handle admin registration
-adminRouter.post('/register', handleAdminRegistration, (req, res) => {
-  res.send('Admin Registration');
-});
+adminRouter.post('/register', authJWT, authorizeAdmin, handleAdminRegistration);
 
 // Get Admin profile by UserID
 adminRouter.get('/profile', authJWT, authorizeAdmin, getProfile);

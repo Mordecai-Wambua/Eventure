@@ -1,12 +1,11 @@
 import cors from 'cors';
 import express from 'express';
-import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import home from './routes/router.js';
 import adminRouter from './routes/adminRoutes.js';
 import organizerRouter from './routes/organizerRoutes.js';
 import database from './config/db.js';
-import { authJWT } from './middleware/authMiddleware.js'; // Assuming you have this middleware
+import logger from './middleware/logger.js';
 
 dotenv.config();
 
@@ -20,12 +19,15 @@ if (!JWT_SECRET) {
 }
 
 app.use(express.json());
+app.use(logger);
 
 // Use CORS middleware
-app.use(cors({
-  origin: 'http://localhost:5173', // Allow requests from this origin
-  credentials: true, // handles cookies or sessions
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:5173', // Allow requests from this origin
+    credentials: true, // handles cookies or sessions
+  })
+);
 
 // Existing routes
 app.use('/', home);

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
 import '../styles/login.css';
 
 const Login = () => {
@@ -6,6 +7,8 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
   const [error, setError] = useState('');
+
+  const navigate = useNavigate(); // Hook for navigation
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent default form submission
@@ -30,9 +33,10 @@ const Login = () => {
         sessionStorage.setItem('token', data.token); // Store in sessionStorage if not remembering
       }
 
-      // Redirect to homepage
-      window.location.href = '/homepage/index.html';
-      
+      // Redirect to organizer profile page
+      const organizerId = data.user.id; // Assuming the response contains the user's ID
+      navigate(`/organizer/${organizerId}`); // Redirect to organizer profile page
+
     } catch (error) {
       setError(error.message);
     }

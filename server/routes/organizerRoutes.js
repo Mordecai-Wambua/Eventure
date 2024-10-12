@@ -22,7 +22,7 @@ organizerRouter.post('/register', handleUserRegistration, (req, res) => {
   res.send('Organizer registration');
 });
 
-// Get User profile
+// Get profile by UserID
 organizerRouter.get('/profile', authJWT, authorizeOrganizer, getProfile);
 
 export default organizerRouter;

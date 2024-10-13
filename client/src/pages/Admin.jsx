@@ -1,5 +1,4 @@
-import React from 'react';
-
+// Admin Page
 export default function Admin() {
   return (
     <>

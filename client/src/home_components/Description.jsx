@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 
 const EasyTicketingIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -36,70 +35,70 @@ const EasyTicketingIcon = () => (
   
   export default function Description() {
     return (
-      <div className="mt-32 flex justify-center flex-col items-center space-y-8">
+      <div className="mt-32 flex flex-col items-center justify-center space-y-8 px-4 md:px-8 lg:px-16">
         <div>
-          <h1 className="text-xl font-semibold">Discover Seamless Event Experiences</h1>
+          <h1 className="text-xl font-semibold text-center md:text-2xl lg:text-3xl">
+            Discover Seamless Event Experiences
+          </h1>
         </div>
         <div>
-          <h1 className="text-3xl font-bold">Elevate Your Event Planning With Eventure</h1>
+          <h1 className="text-2xl font-bold text-center md:text-4xl lg:text-5xl">
+            Elevate Your Event Planning With Eventure
+          </h1>
         </div>
         {/* Icon grid */}
-        <div className="grid grid-cols-4 gap-20 p-20">
+        <div className="grid grid-cols-2 gap-8 p-8 md:grid-cols-3 lg:grid-cols-4 lg:gap-16 lg:p-16">
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <EasyTicketingIcon />
             </div>
-            <p className="mt-2">Easy Ticketing</p>
+            <p className="mt-2 text-center">Easy Ticketing</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <InteractiveMapsIcon />
             </div>
-            <p className="mt-2">Interactive Maps</p>
+            <p className="mt-2 text-center">Interactive Maps</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <RealTimeUpdatesIcon />
             </div>
-            <p className="mt-2">Real-time Updates</p>
+            <p className="mt-2 text-center">Real-time Updates</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <CustomizableExperiencesIcon />
             </div>
-            <p className="mt-2">Customizable Experiences</p>
+            <p className="mt-2 text-center">Customizable Experiences</p>
           </div>
           {/* Additional icons */}
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <AttendeeEngagementIcon />
             </div>
-            <p className="mt-2">Attendee Engagement</p>
+            <p className="mt-2 text-center">Attendee Engagement</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <EfficientCheckinIcon />
             </div>
-            <p className="mt-2">Efficient Check-in</p>
+            <p className="mt-2 text-center">Efficient Check-in</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <DetailedAnalyticsIcon />
             </div>
-            <p className="mt-2">Detailed Analytics</p>
+            <p className="mt-2 text-center">Detailed Analytics</p>
           </div>
           <div className="flex flex-row items-center space-x-2">
             <div className="border border-gray-300 p-2 rounded-md">
               <SecurePaymentsIcon />
             </div>
-            <p className="mt-2">Secure Payments</p>
+            <p className="mt-2 text-center">Secure Payments</p>
           </div>
-        </div>
-        <div className="flex space-x-6">
-            <Button>Start Planning Today</Button>
-            <Button>Explore More Features</Button>
-        </div>
+        </div>       
       </div>
     );
 }
-  
+

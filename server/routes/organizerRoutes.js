@@ -8,6 +8,7 @@ import {
   createEvent,
   updateEvent,
   deleteEvent,
+  getEventAttendees,
 } from '../controllers/events.js';
 import Event from '../models/Event.js';
 
@@ -44,4 +45,11 @@ organizerRouter.put('/event/:id', authJWT, authorizeOrganizer, updateEvent);
 // Delete an event
 organizerRouter.delete('/event/:id', authJWT, authorizeOrganizer, deleteEvent);
 
+// View event tickets
+organizerRouter.get(
+  '/event/:id/tickets',
+  authJWT,
+  authorizeOrganizer,
+  getEventAttendees
+);
 export default organizerRouter;

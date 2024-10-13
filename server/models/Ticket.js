@@ -2,11 +2,15 @@ import mongoose from 'mongoose';
 const Schema = mongoose.Schema;
 
 const ticketSchema = new Schema({
-  user: {
+  attendee: {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
   },
-  event: { type: Schema.Types.ObjectId, ref: 'Event', required: true },
+  event: {
+    eventId: { type: Schema.Types.ObjectId, ref: 'Event', required: true },
+    eventTitle: { type: String, required: true },
+    eventOrganizer: { type: String, required: true },
+  },
   bookedAt: { type: Date, default: Date.now },
 });
 

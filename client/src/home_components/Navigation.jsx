@@ -9,7 +9,7 @@ export default function Navigation() {
   const menuRef = useRef(null); // Reference to the menu for click detection
 
   const navLinks = [
-    { name: 'Events', path: '/' },
+    { name: 'Events', path: '/events' },
     { name: 'FAQ', path: 'faq-section', isScroll: true },
     { name: 'Contact', path: '/contact' },
   ];

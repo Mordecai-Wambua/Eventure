@@ -6,8 +6,6 @@ import adminRouter from './routes/adminRoutes.js';
 import organizerRouter from './routes/organizerRoutes.js';
 import database from './config/db.js';
 import logger from './middleware/logger.js';
-import notFound from './middleware/notFound.js';
-import errorHandler from './middleware/errorHandler.js';
 
 dotenv.config();
 
@@ -35,12 +33,6 @@ app.use(
 app.use('/', home);
 app.use('/api/admin', adminRouter);
 app.use('/api/organizer', organizerRouter);
-
-// Not found middleware
-app.use(notFound);
-
-// Error handling middleware
-app.use(errorHandler);
 
 // Connect to MongoDB and start server
 (async () => {

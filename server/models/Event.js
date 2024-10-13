@@ -7,12 +7,9 @@ const EventSchema = new Schema({
   date: { type: Date, required: true },
   venue: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
-  organizer: {
-    organizerName: { type: String, required: true },
-    organizerId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-  },
+  organizer: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   maxAttendees: { type: Number, required: true },
-  attendeesCount: { type: Number, default: 0 },
+  attendessCount: { type: Number, default: 0 },
 });
 
 const Event = mongoose.model('Event', EventSchema);

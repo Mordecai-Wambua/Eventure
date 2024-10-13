@@ -32,7 +32,7 @@ export default function DiscoverEvents() {
   }, []);
 
   const handleExploreMoreClick = () => {
-    navigate('/events'); // Navigate to /events when clicked
+    navigate('/events');
   };
 
   return (

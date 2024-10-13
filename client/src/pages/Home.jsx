@@ -4,7 +4,7 @@ import SignIn from '@/home_components/Signin';
 import Hero from '@/home_components/Hero';
 import HeroPic from '@/home_components/HeroPic';
 import DiscoverEvents from '@/home_components/DiscoverEvents';
-import Descritpion from '@/home_components/Descritpion';
+import Description from '@/home_components/Description';
 import FAQs from '@/home_components/Faqs';
 import Footer from '@/home_components/Footer';
 
@@ -26,7 +26,7 @@ export default function Home() {
         <DiscoverEvents />
       </div>
       <div>
-        <Descritpion />
+        <Description />
       </div>
       <div>
         <FAQs />

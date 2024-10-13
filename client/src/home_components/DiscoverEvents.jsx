@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from "@/components/ui/carousel";
+import { useNavigate } from 'react-router-dom'; // Import the useNavigate hook
 import HeroImage from '../assets/HeroImage.webp';
 
 export default function DiscoverEvents() {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate(); // Create the navigate function
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -28,6 +30,10 @@ export default function DiscoverEvents() {
 
     fetchEvents();
   }, []);
+
+  const handleExploreMoreClick = () => {
+    navigate('/events'); // Navigate to /events when clicked
+  };
 
   return (
     <div className="flex justify-center mt-4 sm:mt-10 flex-col items-center space-y-8 sm:space-y-16 px-4 sm:px-0">
@@ -65,7 +71,11 @@ export default function DiscoverEvents() {
           </div>
         </Carousel>
       </div>
-      <div className="flex items-center space-x-2">
+      {/* Explore More Section */}
+      <div 
+        className="flex items-center space-x-2 cursor-pointer hover:underline" 
+        onClick={handleExploreMoreClick} // Add onClick event to handle navigation
+      >
         <h1 className="text-lg sm:text-xl font-semibold">Explore More</h1>
         <svg
           xmlns="http://www.w3.org/2000/svg"

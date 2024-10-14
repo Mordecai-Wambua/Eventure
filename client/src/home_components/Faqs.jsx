@@ -31,22 +31,22 @@ const FAQs = () => {
   };
 
   return (
-    <div className="py-16 px-8">
+    <div className="py-16 px-4 md:px-8" id='faq-section'>
       <h1 className="text-3xl font-bold text-center mb-6">Eventure FAQ</h1>
       <h2 className="text-center text-gray-600 mb-10">Frequently Asked Questions</h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (
-          <div key={index} className="border rounded-md">
+          <div key={index} className="border rounded-lg shadow-md overflow-hidden transition-transform duration-300 ease-in-out transform hover:scale-105">
             <div
-              className="p-4 cursor-pointer bg-gray-100 flex justify-between items-center"
+              className="p-4 cursor-pointer bg-gray-100 flex justify-between items-center hover:bg-gray-200"
               onClick={() => toggleFAQ(index)}
             >
               <h3 className="text-lg font-semibold">{faq.question}</h3>
-              <span>{activeIndex === index ? '-' : '+'}</span>
+              <span className="text-lg">{activeIndex === index ? '-' : '+'}</span>
             </div>
             {activeIndex === index && (
               <div className="p-4 bg-white border-t">
-                <p>{faq.answer}</p>
+                <p className="text-gray-700">{faq.answer}</p>
               </div>
             )}
           </div>

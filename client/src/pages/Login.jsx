@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/login.css';
 
 const Login = () => {
+  const apiLink = import.meta.env.VITE_SERVER_API;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [remember, setRemember] = useState(false);
@@ -12,7 +13,8 @@ const Login = () => {
 
   useEffect(() => {
     const checkExistingToken = () => {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+      const token =
+        localStorage.getItem('token') || sessionStorage.getItem('token');
       if (token) {
         navigate('/organizer');
       }
@@ -27,10 +29,10 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/organizer/login', {
+      const response = await fetch(`${apiLink}/api/organizer/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await response.json();
@@ -64,36 +66,40 @@ const Login = () => {
         {error && <p className='error-message'>{error}</p>}
         <form id='loginForm' onSubmit={handleSubmit}>
           <div className='input_box'>
-            <input 
-              type='email' 
-              id='email' 
-              className='input-field' 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <input
+              type='email'
+              id='email'
+              className='input-field'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
             />
-            <label htmlFor='email' className='label'>Email</label>
+            <label htmlFor='email' className='label'>
+              Email
+            </label>
             <i className='bx bx-user icon'></i>
           </div>
           <div className='input_box'>
-            <input 
-              type='password' 
-              id='password' 
-              className='input-field' 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <input
+              type='password'
+              id='password'
+              className='input-field'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
             />
-            <label htmlFor='password' className='label'>Password</label>
+            <label htmlFor='password' className='label'>
+              Password
+            </label>
             <i className='bx bx-lock-alt icon'></i>
           </div>
           <div className='remember-forgot'>
             <div className='remember-me'>
-              <input 
-                type='checkbox' 
-                id='remember' 
-                checked={remember} 
-                onChange={(e) => setRemember(e.target.checked)} 
+              <input
+                type='checkbox'
+                id='remember'
+                checked={remember}
+                onChange={(e) => setRemember(e.target.checked)}
               />
               <label htmlFor='remember'> Remember me </label>
             </div>
@@ -102,11 +108,11 @@ const Login = () => {
             </div>
           </div>
           <div className='input_box'>
-            <input 
-              type='submit' 
-              className='input-submit' 
-              value={isLoading ? 'Logging in...' : 'Login'} 
-              disabled={isLoading} 
+            <input
+              type='submit'
+              className='input-submit'
+              value={isLoading ? 'Logging in...' : 'Login'}
+              disabled={isLoading}
             />
           </div>
           <div className='register'>

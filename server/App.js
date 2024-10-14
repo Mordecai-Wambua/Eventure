@@ -14,6 +14,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_KEY;
+const DEV_LINK = process.env.DEV_LINK;
 
 if (!JWT_SECRET) {
   console.error('JWT_KEY is not set in the environment variables');
@@ -26,7 +27,7 @@ app.use(logger);
 // Use CORS middleware
 app.use(
   cors({
-    origin: 'http://localhost:5173', // Allow requests from this origin
+    origin: DEV_LINK || 'http://localhost:5173', // Allow requests from this origin
     credentials: true, // handles cookies or sessions
   })
 );

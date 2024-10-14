@@ -4,24 +4,20 @@ import '../styles/login.css';
 
 const Login = () => {
   const apiLink = import.meta.env.VITE_SERVER_API;
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(false);
+  const [formData, setFormData] = useState({ email: '', password: '', remember: false });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkExistingToken = () => {
-      const token =
-        localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (token) {
-        navigate('/organizer');
-      }
-    };
-
-    checkExistingToken();
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) navigate('/organizer');
   }, [navigate]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,23 +28,16 @@ const Login = () => {
       const response = await fetch(`${apiLink}/api/organizer/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed!');
-      }
+      if (!response.ok) throw new Error(data.message || 'Login failed!');
 
-      // Store token based on remember me option
-      if (remember) {
-        localStorage.setItem('token', data.token);
-      } else {
-        sessionStorage.setItem('token', data.token);
-      }
+      const storage = formData.remember ? localStorage : sessionStorage;
+      storage.setItem('token', data.token);
 
-      // Redirect to the organizer dashboard after successful login
       navigate('/organizer');
     } catch (error) {
       setError(error.message);
@@ -69,28 +58,26 @@ const Login = () => {
             <input
               type='email'
               id='email'
+              name='email'
               className='input-field'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               required
             />
-            <label htmlFor='email' className='label'>
-              Email
-            </label>
+            <label htmlFor='email' className='label'>Email</label>
             <i className='bx bx-user icon'></i>
           </div>
           <div className='input_box'>
             <input
               type='password'
               id='password'
+              name='password'
               className='input-field'
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              value={formData.password}
+              onChange={handleChange}
               required
             />
-            <label htmlFor='password' className='label'>
-              Password
-            </label>
+            <label htmlFor='password' className='label'>Password</label>
             <i className='bx bx-lock-alt icon'></i>
           </div>
           <div className='remember-forgot'>
@@ -98,8 +85,9 @@ const Login = () => {
               <input
                 type='checkbox'
                 id='remember'
-                checked={remember}
-                onChange={(e) => setRemember(e.target.checked)}
+                name='remember'
+                checked={formData.remember}
+                onChange={handleChange}
               />
               <label htmlFor='remember'> Remember me </label>
             </div>
@@ -116,9 +104,7 @@ const Login = () => {
             />
           </div>
           <div className='register'>
-            <span>
-              Don&apos;t have an account? <a href='/register'>Register</a>
-            </span>
+            <span>Don&apos;t have an account? <a href='/register'>Register</a></span>
           </div>
         </form>
       </div>

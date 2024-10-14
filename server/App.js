@@ -27,8 +27,17 @@ app.use(logger);
 // Use CORS middleware
 app.use(
   cors({
-    origin: DEV_LINK || 'http://localhost:5173', // Allow requests from this origin
-    credentials: true, // handles cookies or sessions
+    origin: (origin, callback) => {
+      const allowedOrigins = [DEV_LINK, 'http://localhost:5173'];
+
+      // If no origin is provided (e.g., non-browser request), allow it
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true, // Allow cookies and credentials
   })
 );
 

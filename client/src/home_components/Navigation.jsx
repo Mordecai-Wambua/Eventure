@@ -22,7 +22,7 @@ export default function Navigation() {
 
   const handleCreateEvent = () => {
     console.log('Create Event clicked');
-    navigate('/login');
+    navigate('/register');
     setIsMenuOpen(false); // Close menu on Get Started
   };
 

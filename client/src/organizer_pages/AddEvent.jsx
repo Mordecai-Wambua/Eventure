@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 
 export default function AddEvent() {
   const apiLink = import.meta.env.VITE_SERVER_API;
-  // State to handle form inputs
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -14,6 +14,7 @@ export default function AddEvent() {
 
   const [message, setMessage] = useState(null);
   const navigate = useNavigate();
+  const authHeader = useAuthHeader(); // Retrieve the auth header
 
   // Handle input change
   const handleChange = (e) => {
@@ -28,11 +29,8 @@ export default function AddEvent() {
     e.preventDefault();
 
     try {
-      // Get token from localStorage or sessionStorage
-      const token =
-        localStorage.getItem('token') || sessionStorage.getItem('token');
-
-      if (!token) {
+      // Check if authHeader is available
+      if (!authHeader) {
         throw new Error('Access denied. No token provided.');
       }
 
@@ -40,7 +38,7 @@ export default function AddEvent() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
+          Authorization: authHeader, // Use the auth header directly
         },
         body: JSON.stringify(formData),
       });

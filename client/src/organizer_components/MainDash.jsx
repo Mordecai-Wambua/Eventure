@@ -1,49 +1,97 @@
-import { CalendarDays, PlusCircle, Users, Mail } from 'lucide-react';
+/* eslint-disable react/prop-types */
+import { useNavigate } from 'react-router-dom';
+import { Calendar, UserPlus, List, PlusCircle, Users, Mail } from 'lucide-react';
+
+const Card = ({ icon: Icon, title, description, buttonText, onClick, color }) => (
+  <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg cursor-pointer transform hover:scale-105 transition-all duration-300">
+    <div className="flex items-center">
+      <div className={`p-3 ${color} rounded-full`}>
+        <Icon size={24} className={`text-${color.split('-')[0]}-500`} />
+      </div>
+      <div className="ml-3">
+        <h2 className="text-lg font-bold text-gray-700">{title}</h2>
+        <p className="text-gray-500 mt-1 text-sm">{description}</p>
+      </div>
+    </div>
+    <button
+      onClick={onClick}
+      className={`mt-2 text-${color.split('-')[0]}-600 hover:text-${color.split('-')[0]}-800 font-medium text-sm`}
+      aria-label={buttonText}
+    >
+      {buttonText} →
+    </button>
+  </div>
+);
+
+const QuickAction = ({ icon: Icon, text, onClick, color }) => (
+  <div
+    className="flex items-center p-4 border rounded-lg bg-white shadow-md hover:bg-gray-100 cursor-pointer transform hover:scale-105 transition-all duration-300"
+    onClick={onClick}
+    aria-label={text}
+  >
+    <Icon size={20} className={`mr-3 text-${color}-500`} />
+    <span className="font-semibold text-sm sm:text-base">{text}</span>
+  </div>
+);
 
 export default function MainDash() {
+  const navigate = useNavigate();
+
   return (
-    <div className="p-8">
-      {/* Welcome Section */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-bold">Welcome</h1>
-        <p className="text-gray-600 mt-2">Here&apos;s what&apos;s happening with your events today.</p>
+    <div className="bg-gray-100 rounded-lg shadow-md p-6 max-w-7xl mx-auto">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold text-gray-800">Welcome</h1>
+        <p className="text-gray-600 mt-2 text-base sm:text-lg">Here&apos;s what&apos;s happening with your events today.</p>
       </div>
 
-      {/* Key Stats Overview */}
-      <div className="grid grid-cols-3 gap-6 mb-10">
-        <div className="border p-6 rounded-md shadow-md bg-white flex flex-col items-center">
-          <CalendarDays size={36} className="text-blue-500 mb-2" />
-          <h2 className="text-lg font-semibold">Total Events</h2>
-          <p className="text-xl font-bold">10</p>
-        </div>
-        <div className="border p-6 rounded-md shadow-md bg-white flex flex-col items-center">
-          <Users size={36} className="text-green-500 mb-2" />
-          <h2 className="text-lg font-semibold">Total Attendees</h2>
-          <p className="text-xl font-bold">120</p>
-        </div>
-        <div className="border p-6 rounded-md shadow-md bg-white flex flex-col items-center">
-          <CalendarDays size={36} className="text-purple-500 mb-2" />
-          <h2 className="text-lg font-semibold">Upcoming Events</h2>
-          <p className="text-xl font-bold">5</p>
-        </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+        <Card
+          icon={UserPlus}
+          title="Events Created"
+          description="Manage all your created events"
+          buttonText="View Details"
+          onClick={() => navigate('/events-created')}
+          color="bg-blue-100"
+        />
+        <Card
+          icon={Calendar}
+          title="Current Events"
+          description="View events happening now"
+          buttonText="View Current Events"
+          onClick={() => navigate('/current-events')}
+          color="bg-green-100"
+        />
+        <Card
+          icon={List}
+          title="Upcoming Events"
+          description="Prepare for future events"
+          buttonText="View Upcoming Events"
+          onClick={() => navigate('/upcoming-events')}
+          color="bg-yellow-100"
+        />
       </div>
 
-      {/* Quick Actions */}
-      <div className="mb-10">
-        <h2 className="text-2xl font-semibold mb-4">Quick Actions</h2>
-        <div className="grid grid-cols-3 gap-6">
-          <div className="flex items-center p-4 border rounded bg-white shadow-md hover:bg-gray-200 cursor-pointer">
-            <PlusCircle size={24} className="mr-3 text-blue-500" />
-            <span className="font-semibold">Create New Event</span>
-          </div>
-          <div className="flex items-center p-4 border rounded bg-white shadow-md hover:bg-gray-200 cursor-pointer">
-            <Users size={24} className="mr-3 text-green-500" />
-            <span className="font-semibold">Manage Attendees</span>
-          </div>
-          <div className="flex items-center p-4 border rounded bg-white shadow-md hover:bg-gray-200 cursor-pointer">
-            <Mail size={24} className="mr-3 text-purple-500" />
-            <span className="font-semibold">Send Invitations</span>
-          </div>
+      <div className="mb-8">
+        <h2 className="text-2xl font-semibold mb-4 text-gray-800">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          <QuickAction
+            icon={PlusCircle}
+            text="Create New Event"
+            onClick={() => navigate('/add-event')}
+            color="blue"
+          />
+          <QuickAction
+            icon={Users}
+            text="Manage Attendees"
+            onClick={() => navigate('/manage-attendees')}
+            color="green"
+          />
+          <QuickAction
+            icon={Mail}
+            text="Send Invitations"
+            onClick={() => navigate('/send-invitations')}
+            color="purple"
+          />
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
   createEvent,
   updateEvent,
   deleteEvent,
+  getEventAttendees,
 } from '../controllers/events.js';
 import Event from '../models/Event.js';
 
@@ -18,7 +19,9 @@ organizerRouter.get('/', authJWT, authorizeOrganizer, async (req, res) => {
   const userId = req.user.id;
   // Showcase all events done by a user
   try {
-    const eventsPosted = await Event.find({ organizer: userId }).select('-__v');
+    const eventsPosted = await Event.find({
+      'organizer.organizerId': userId,
+    }).select('-__v');
     res.status(200).json({ eventsPosted });
   } catch (error) {
     console.error('Error fetching events:', error); // Log the error for debugging
@@ -44,4 +47,11 @@ organizerRouter.put('/event/:id', authJWT, authorizeOrganizer, updateEvent);
 // Delete an event
 organizerRouter.delete('/event/:id', authJWT, authorizeOrganizer, deleteEvent);
 
+// View event tickets
+organizerRouter.get(
+  '/event/:id/tickets',
+  authJWT,
+  authorizeOrganizer,
+  getEventAttendees
+);
 export default organizerRouter;

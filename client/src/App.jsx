@@ -11,6 +11,8 @@ import MyEvents from './organizer_pages/MyEvents';
 import AttendeeList from './organizer_pages/AttendeeList';
 import UpdateEvent from './organizer_pages/UpdateEvent';
 import DeleteEvent from './organizer_pages/DeleteEvent';
+import BookEvents from './pages/BookEvents';
+import Register from './organizer_pages/Register';
 
 function App() {
   return (
@@ -28,6 +30,8 @@ function App() {
         <Route path='/attendee-list' element={<AttendeeList />} />
         <Route path='/update-event:id' element={<UpdateEvent />} />
         <Route path='/delete-event' element={<DeleteEvent />} />
+        <Route path="/events/:id" element={<BookEvents />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </>
   );

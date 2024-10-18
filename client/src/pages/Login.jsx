@@ -3,23 +3,21 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/login.css';
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [remember, setRemember] = useState(false);
+  const apiLink = import.meta.env.VITE_SERVER_API;
+  const [formData, setFormData] = useState({ email: '', password: '', remember: false });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const checkExistingToken = () => {
-      const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-      if (token) {
-        navigate('/organizer');
-      }
-    };
-
-    checkExistingToken();
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+    if (token) navigate('/organizer');
   }, [navigate]);
+
+  const handleChange = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({ ...prev, [name]: type === 'checkbox' ? checked : value }));
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,26 +25,19 @@ const Login = () => {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/organizer/login', {
+      const response = await fetch(`${apiLink}/api/organizer/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message || 'Login failed!');
-      }
+      if (!response.ok) throw new Error(data.message || 'Login failed!');
 
-      // Store token based on remember me option
-      if (remember) {
-        localStorage.setItem('token', data.token);
-      } else {
-        sessionStorage.setItem('token', data.token);
-      }
+      const storage = formData.remember ? localStorage : sessionStorage;
+      storage.setItem('token', data.token);
 
-      // Redirect to the organizer dashboard after successful login
       navigate('/organizer');
     } catch (error) {
       setError(error.message);
@@ -64,36 +55,39 @@ const Login = () => {
         {error && <p className='error-message'>{error}</p>}
         <form id='loginForm' onSubmit={handleSubmit}>
           <div className='input_box'>
-            <input 
-              type='email' 
-              id='email' 
-              className='input-field' 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
+            <input
+              type='email'
+              id='email'
+              name='email'
+              className='input-field'
+              value={formData.email}
+              onChange={handleChange}
+              required
             />
             <label htmlFor='email' className='label'>Email</label>
             <i className='bx bx-user icon'></i>
           </div>
           <div className='input_box'>
-            <input 
-              type='password' 
-              id='password' 
-              className='input-field' 
-              value={password} 
-              onChange={(e) => setPassword(e.target.value)} 
-              required 
+            <input
+              type='password'
+              id='password'
+              name='password'
+              className='input-field'
+              value={formData.password}
+              onChange={handleChange}
+              required
             />
             <label htmlFor='password' className='label'>Password</label>
             <i className='bx bx-lock-alt icon'></i>
           </div>
           <div className='remember-forgot'>
             <div className='remember-me'>
-              <input 
-                type='checkbox' 
-                id='remember' 
-                checked={remember} 
-                onChange={(e) => setRemember(e.target.checked)} 
+              <input
+                type='checkbox'
+                id='remember'
+                name='remember'
+                checked={formData.remember}
+                onChange={handleChange}
               />
               <label htmlFor='remember'> Remember me </label>
             </div>
@@ -102,17 +96,15 @@ const Login = () => {
             </div>
           </div>
           <div className='input_box'>
-            <input 
-              type='submit' 
-              className='input-submit' 
-              value={isLoading ? 'Logging in...' : 'Login'} 
-              disabled={isLoading} 
+            <input
+              type='submit'
+              className='input-submit'
+              value={isLoading ? 'Logging in...' : 'Login'}
+              disabled={isLoading}
             />
           </div>
           <div className='register'>
-            <span>
-              Don&apos;t have an account? <a href='/register'>Register</a>
-            </span>
+            <span>Don&apos;t have an account? <a href='/register'>Register</a></span>
           </div>
         </form>
       </div>

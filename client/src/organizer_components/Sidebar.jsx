@@ -1,54 +1,86 @@
-import { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, UserPlus, List, PlusCircle, Trash } from 'lucide-react';
+import { Home, Calendar, UserPlus, List, PlusCircle, Trash, ChevronRight } from 'lucide-react';
 
 const menuItems = [
   { name: 'Dashboard', icon: Home, path: '/dashboard', overview: 'Overview of your dashboard' },
-  { name: 'MyEvents', icon: Calendar, path: '/my-events', overview: 'View and manage your events' },
+  { name: 'My Events', icon: Calendar, path: '/my-events', overview: 'View and manage your events' },
   { name: 'Add Event', icon: UserPlus, path: '/add-event', overview: 'Create and schedule a new event' },
-  { name: 'AtendeeList', icon: List, path: '/attendee-list', overview: 'Check the list of all attendees' },
-  { name: 'Update Event', icon: PlusCircle, path:'/update-event:id', overview: 'Updates created events'},
-  { name: 'Delete Event', icon: Trash, path:'/delete-event', overview: 'Deletes created events'}
-
+  { name: 'Attendee List', icon: List, path: '/attendee-list', overview: 'Check the list of all attendees' },
+  { name: 'Update Event', icon: PlusCircle, path: '/update-event', overview: 'Update created events' },
+  { name: 'Delete Event', icon: Trash, path: '/delete-event', overview: 'Delete created events' }
 ];
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen, toggleSidebar }) => {
   const location = useLocation();
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
-    <div className="w-64 bg-gray-200 p-4 rounded-r-2xl py-16 relative">
-      <h2 className="text-2xl font-bold mb-6">Eventure</h2>
-      <ul>
-        {menuItems.map((item) => {
-          const isActive = location.pathname.startsWith(item.path);
+    <aside
+      className={`fixed left-0 top-0 h-full bg-white shadow-lg transition-all duration-300 ease-in-out z-50
+                  ${isOpen ? 'w-64' : 'w-20'}
+                  ${isMobile ? (isOpen ? 'translate-x-0' : '-translate-x-full') : 'translate-x-0'}`}
+    >
+      <div className="flex items-center justify-between p-4 border-b">
+        <h2 className={`text-2xl font-bold transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0'}`}>
+          Eventure
+        </h2>
+        <button 
+          onClick={toggleSidebar} 
+          className="p-2 rounded-full hover:bg-gray-200 transition-colors duration-200"
+          aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
+        >
+          <ChevronRight size={24} className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+      </div>
 
-          return (
-            <li 
-              key={item.name} 
-              className="mb-4 relative"
-              onMouseEnter={() => setHoveredItem(item.name)}
-              onMouseLeave={() => setHoveredItem(null)}
-            >
-              <Link
-                to={item.path}
-                className={`flex items-center text-gray-700 p-2 rounded 
-                ${isActive ? 'bg-gray-300 font-semibold' : 'hover:bg-gray-300'}`}
+      <nav>
+        <ul className="mt-4 space-y-2">
+          {menuItems.map((item) => {
+            const isActive = location.pathname.startsWith(item.path);
+
+            return (
+              <li 
+                key={item.name} 
+                className="relative group"
+                onMouseEnter={() => setHoveredItem(item.name)}
+                onMouseLeave={() => setHoveredItem(null)}
               >
-                <item.icon className="mr-2" /> {item.name}
-              </Link>
+                <Link
+                  to={item.path}
+                  className={`flex items-center p-3 mx-2 rounded-lg transition-all duration-300
+                              ${isActive ? 'bg-blue-100 text-blue-600' : 'text-gray-600 hover:bg-gray-100 hover:text-gray-800'}`}
+                  onClick={() => isMobile && toggleSidebar()}
+                >
+                  <item.icon className="w-6 h-6 flex-shrink-0" />
+                  <span className={`ml-3 transition-opacity duration-300 ${isOpen ? 'opacity-100' : 'opacity-0 w-0'}`}>
+                    {item.name}
+                  </span>
+                </Link>
 
-              {hoveredItem === item.name && (
-                <div className="absolute left-full top-0 ml-2 w-56 bg-white p-3 shadow-lg rounded-lg z-10">
-                  <h3 className="font-semibold text-lg">{item.name}</h3>
-                  <p className="text-gray-600">{item.overview}</p>
-                </div>
-              )}
-            </li>
-          );
-        })}
-      </ul>
-    </div>
+                {hoveredItem === item.name && !isOpen && !isMobile && (
+                  <div className="absolute left-full top-0 ml-2 w-48 bg-white p-2 shadow-lg rounded-md z-10">
+                    <h3 className="font-semibold">{item.name}</h3>
+                    <p className="text-sm text-gray-600">{item.overview}</p>
+                  </div>
+                )}
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </aside>
   );
 };
 

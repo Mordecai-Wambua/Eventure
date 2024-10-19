@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useState, useEffect, useCallback } from 'react';
 import Header from '@/organizer_components/Header';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';

@@ -31,9 +31,7 @@ const Login = () => {
       const data = await response.json();
   
       if (!response.ok) throw new Error(data.message || 'Login failed!');
-  
-      console.log('Response data:', data);
-      console.log('Token:', data.token);
+
   
       if (!data.token) {
         throw new Error('No token received from server');

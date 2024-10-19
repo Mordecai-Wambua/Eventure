@@ -51,7 +51,7 @@ export default function MainDash() {
           description="Manage all your created events"
           buttonText="View Details"
           onClick={() => navigate('/events-created')}
-          color="bg-blue-100"
+          color="bg-blue-200"
         />
         <Card
           icon={Calendar}
@@ -59,7 +59,7 @@ export default function MainDash() {
           description="View events happening now"
           buttonText="View Current Events"
           onClick={() => navigate('/current-events')}
-          color="bg-green-100"
+          color="bg-green-200"
         />
         <Card
           icon={List}
@@ -67,7 +67,7 @@ export default function MainDash() {
           description="Prepare for future events"
           buttonText="View Upcoming Events"
           onClick={() => navigate('/upcoming-events')}
-          color="bg-yellow-100"
+          color="bg-yellow-200"
         />
       </div>
 
@@ -83,7 +83,7 @@ export default function MainDash() {
           <QuickAction
             icon={Users}
             text="Manage Attendees"
-            onClick={() => navigate('/manage-attendees')}
+            onClick={() => navigate('/attendee-list')}
             color="green"
           />
           <QuickAction

@@ -22,14 +22,17 @@ export default function Event() {
         }
 
         const data = await response.json();
-        setEvents(data);
+
+        const upcomingEvents = data.filter(event => new Date(event.date) > new Date());
+
+        setEvents(upcomingEvents);
       } catch (error) {
         console.error('Error fetching events:', error);
       }
     };
 
     fetchEvents();
-  }, []);
+  }, [apiLink]);
 
   const handleEventClick = (eventId) => {
     navigate(`/events/${eventId}`);

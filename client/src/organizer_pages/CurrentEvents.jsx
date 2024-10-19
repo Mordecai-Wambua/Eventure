@@ -1,4 +1,6 @@
-import  { useState, useEffect } from 'react';
+/* eslint-disable react/prop-types */
+import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import Header from '@/organizer_components/Header';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
 import { Calendar, Clock, MapPin, Users, ChevronRight, X } from 'lucide-react';
@@ -9,8 +11,9 @@ const Events = () => {
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
-  const [selectedEvent, setSelectedEvent] = useState(null); // To track selected event for the modal
+  const [selectedEvent, setSelectedEvent] = useState(null);
   const authHeader = useAuthHeader();
+  const location = useLocation();
 
   useEffect(() => {
     if (!authHeader) {
@@ -54,12 +57,87 @@ const Events = () => {
     setSelectedEvent(null);
   };
 
+  const isToday = (date) => {
+    const today = new Date();
+    const eventDate = new Date(date);
+    return (
+      eventDate.getDate() === today.getDate() &&
+      eventDate.getMonth() === today.getMonth() &&
+      eventDate.getFullYear() === today.getFullYear()
+    );
+  };
+
+  const todayEvents = events.filter(event => isToday(event.date));
+  const upcomingEvents = events.filter(event => new Date(event.date) > new Date() && !isToday(event.date));
+  const pastEvents = events.filter(event => new Date(event.date) < new Date() && !isToday(event.date));
+  const allEvents = events;
+
+  const renderEventList = (eventList, title) => (
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-4">{title}</h2>
+      {eventList.length > 0 ? (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {eventList.map((event) => (
+            <EventCard key={event._id} event={event} onViewDetails={() => openModal(event)} />
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-8 bg-white rounded-lg shadow">
+          <p className="text-gray-500 text-lg">No events found.</p>
+          <p className="mt-2 text-sm text-gray-400">
+            {title === "Today's Events" 
+              ? 'There are no events scheduled for today.'
+              : title === "Upcoming Events"
+                ? 'There are no upcoming events scheduled.'
+                : title === "Past Events"
+                  ? 'There are no past events.'
+                  : 'Create your first event to get started!'}
+          </p>
+        </div>
+      )}
+    </div>
+  );
+
+  const getPageContent = () => {
+    switch (location.pathname) {
+      case '/current-events':
+        return renderEventList(todayEvents, "Today's Events");
+      case '/upcoming-events':
+        return renderEventList(upcomingEvents, "Upcoming Events");
+      case '/events-created':
+        return (
+          <div className="space-y-12">
+            {renderEventList(todayEvents, "Today's Events")}
+            {renderEventList(upcomingEvents, "Upcoming Events")}
+            {renderEventList(pastEvents, "Past Events")}
+          </div>
+        );
+      default:
+        return renderEventList(allEvents, "All Events");
+    }
+  };
+
+  const getPageTitle = () => {
+    switch (location.pathname) {
+      case '/current-events':
+        return "Today's Events";
+      case '/upcoming-events':
+        return "Upcoming Events";
+      case '/events-created':
+        return "All Created Events";
+      default:
+        return "All Events";
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <Header />
       <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
         <div className="px-4 py-6 sm:px-0">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">My Events</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            {getPageTitle()}
+          </h1>
 
           {error && (
             <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6" role="alert">
@@ -77,21 +155,11 @@ const Events = () => {
               <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500"></div>
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {events.length > 0 ? (
-                events.map((event) => (
-                  <EventCard key={event._id} event={event} onViewDetails={() => openModal(event)} />
-                ))
-              ) : (
-                <div className="col-span-full text-center py-12 bg-white rounded-lg shadow">
-                  <p className="text-gray-500 text-lg">No events found.</p>
-                  <p className="mt-2 text-sm text-gray-400">Create your first event to get started!</p>
-                </div>
-              )}
+            <div className="space-y-12">
+              {getPageContent()}
             </div>
           )}
 
-          {/* Modal for event details */}
           {selectedEvent && <EventModal event={selectedEvent} onClose={closeModal} />}
         </div>
       </main>

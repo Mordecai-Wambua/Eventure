@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HeroImage from '../assets/HeroImage.webp';
-import PropTypes from 'prop-types';
 
 export default function RegisterOrganizer() {
   const [formData, setFormData] = useState({
@@ -18,8 +17,9 @@ export default function RegisterOrganizer() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.name) newErrors.name = 'Name is required.';
-    if (!formData.email) newErrors.email = 'Email is required.';
+    if (!formData.name.trim()) newErrors.name = 'Name is required.';
+    if (!formData.email.trim()) newErrors.email = 'Email is required.';
+    else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'Email is invalid.';
     if (!formData.password) {
       newErrors.password = 'Password is required.';
     } else if (formData.password.length < 8) {
@@ -32,10 +32,15 @@ export default function RegisterOrganizer() {
   };
 
   const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+    const { name, value } = e.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    // Clear the error for this field as the user types
+    if (errors[name]) {
+      setErrors((prevErrors) => ({ ...prevErrors, [name]: '' }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -46,6 +51,8 @@ export default function RegisterOrganizer() {
     const validationErrors = validateForm();
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      const firstErrorField = Object.keys(validationErrors)[0];
+      document.getElementById(firstErrorField)?.focus();
       return;
     }
 
@@ -62,46 +69,16 @@ export default function RegisterOrganizer() {
       const result = await response.json();
       if (response.ok) {
         setMessage('Registration successful!');
-        navigate('/login');
+        setTimeout(() => navigate('/login'), 2000);
       } else {
         setMessage(result.message || 'Registration failed.');
       }
     } catch (error) {
       console.error('Error registering user:', error);
       setMessage('An error occurred during registration.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
-
-  const FloatingLabelInput = ({ name, type, value, onChange, error }) => (
-    <div className="relative">
-      <input
-        id={name}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder=" "
-        className={`block w-full px-3 py-2 border ${
-          error ? 'border-red-500' : 'border-gray-300'
-        } rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm peer`}
-      />
-      <label
-        htmlFor={name}
-        className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1"
-      >
-        {name.charAt(0).toUpperCase() + name.slice(1)}
-      </label>
-      {error && <span className="text-red-500 text-xs mt-1">{error}</span>}
-    </div>
-  );
-
-  FloatingLabelInput.propTypes = {
-    name: PropTypes.string.isRequired,
-    type: PropTypes.string.isRequired,
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
-    onChange: PropTypes.func.isRequired,
-    error: PropTypes.string,
   };
 
   return (
@@ -128,46 +105,76 @@ export default function RegisterOrganizer() {
           )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
-            <FloatingLabelInput
-              name="name"
-              type="text"
-              value={formData.name}
-              onChange={handleInputChange}
-              error={errors.name}
-            />
+            {/* Name */}
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                Name
+              </label>
+              <input
+                id="name"
+                name="name"
+                type="text"
+                value={formData.name}
+                onChange={handleInputChange}
+                className={`block w-full px-3 py-2 border ${errors.name ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              />
+              {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+            </div>
 
-            <FloatingLabelInput
-              name="email"
-              type="email"
-              value={formData.email}
-              onChange={handleInputChange}
-              error={errors.email}
-            />
+            {/* Email */}
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                Email
+              </label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                className={`block w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            </div>
 
-            <FloatingLabelInput
-              name="password"
-              type="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              error={errors.password}
-            />
+            {/* Password */}
+            <div>
+              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                value={formData.password}
+                onChange={handleInputChange}
+                className={`block w-full px-3 py-2 border ${errors.password ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              />
+              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+            </div>
 
-            <FloatingLabelInput
-              name="confirmPassword"
-              type="password"
-              value={formData.confirmPassword}
-              onChange={handleInputChange}
-              error={errors.confirmPassword}
-            />
+            {/* Confirm Password */}
+            <div>
+              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+                Confirm Password
+              </label>
+              <input
+                id="confirmPassword"
+                name="confirmPassword"
+                type="password"
+                value={formData.confirmPassword}
+                onChange={handleInputChange}
+                className={`block w-full px-3 py-2 border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
+              />
+              {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+            </div>
 
             <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters long.</p>
 
             <div>
               <button
                 type="submit"
-                className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out ${
-                  loading ? 'opacity-75 cursor-not-allowed' : ''
-                }`}
+                className={`w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-gradient-to-r from-indigo-600 to-blue-600 hover:from-indigo-700 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition duration-150 ease-in-out ${loading ? 'opacity-75 cursor-not-allowed' : ''}`}
                 disabled={loading}
               >
                 {loading ? 'Registering...' : 'Register'}

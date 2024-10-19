@@ -15,9 +15,9 @@ export default function MyProfile() {
       }
 
       try {
-        const response = await fetch(`${apiLink}/api/profile`, {
+        const response = await fetch(`${apiLink}/api/organizer/profile`, {
           headers: {
-            Authorization: authHeader(),
+            Authorization: authHeader,
             'Content-Type': 'application/json',
           },
         });

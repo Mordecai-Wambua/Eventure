@@ -17,9 +17,12 @@ import SendInvites from './organizer_pages/SendInvites';
 import Events from './organizer_pages/CurrentEvents';
 import MyProfile from './organizer_pages/MyProfile';
 
+// Vercel analytics
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   return (
+	<>
     <Routes>
       <Route path='/' element={<Home />} />
       <Route path='/events' element={<Event />} />
@@ -45,6 +48,8 @@ function App() {
       <Route path="/register" element={<Register />} />
 
     </Routes>
+	<Analytics />
+	</>
   );
 }
 

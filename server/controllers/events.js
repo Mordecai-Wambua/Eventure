@@ -167,6 +167,7 @@ export async function getEventAttendees(req, res) {
   }
 }
 
+// Ticket confirmation email
 export async function emailConfirmation(email, ticket, event) {
   // Configure the transporter
   const transporter = nodemailer.createTransport({
@@ -207,7 +208,7 @@ export async function emailConfirmation(email, ticket, event) {
       </div>
       
       <div style="margin-top: 20px; font-size: 14px; color: #777; text-align: center;">
-        <p>If you have any questions, feel free to <a href="mailto:info@modekk.tech" style="color: #2a9df4;">contact us</a>.</p>
+        <p>If you have any questions, feel free to <a href="mailto:support@modekk.tech" style="color: #2a9df4;">contact us</a>.</p>
         <p>&copy; 2024 Eventure, All rights reserved.</p>
       </div>
     </div>

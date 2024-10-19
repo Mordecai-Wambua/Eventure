@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import  useSignIn  from 'react-auth-kit/hooks/useSignIn';
 import '../styles/login.css';
 
 const Login = () => {
@@ -7,12 +8,8 @@ const Login = () => {
   const [formData, setFormData] = useState({ email: '', password: '', remember: false });
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const signIn = useSignIn();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (token) navigate('/organizer');
-  }, [navigate]);
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -23,23 +20,38 @@ const Login = () => {
     e.preventDefault();
     setError('');
     setIsLoading(true);
-
+  
     try {
       const response = await fetch(`${apiLink}/api/organizer/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
+  
       const data = await response.json();
-
+  
       if (!response.ok) throw new Error(data.message || 'Login failed!');
 
-      const storage = formData.remember ? localStorage : sessionStorage;
-      storage.setItem('token', data.token);
-
-      navigate('/organizer');
+  
+      if (!data.token) {
+        throw new Error('No token received from server');
+      }
+  
+      const isAuthenticated = signIn({
+        auth: {
+          token: data.token,
+          type: 'Bearer'
+        },
+        userState: { email: formData.email },
+      });
+  
+      if (isAuthenticated) {
+        navigate('/organizer');
+      } else {
+        setError('Authentication failed. Please try again.');
+      }
     } catch (error) {
+      console.error('Login error:', error);
       setError(error.message);
     } finally {
       setIsLoading(false);
@@ -47,7 +59,8 @@ const Login = () => {
   };
 
   return (
-    <div className='wrapper'>
+   
+   <div className='wrapper'>
       <div className='login-box'>
         <div className='login-header'>
           <span>Login</span>

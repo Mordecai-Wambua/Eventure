@@ -1,14 +1,14 @@
 /* eslint-disable react/prop-types */
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Home, Calendar, UserPlus, List, PlusCircle, Trash, ChevronRight } from 'lucide-react';
+import { Home, Calendar, CalendarPlus, List, PlusCircle, Trash, ChevronRight } from 'lucide-react';
 
 const menuItems = [
   { name: 'Dashboard', icon: Home, path: '/dashboard', overview: 'Overview of your dashboard' },
   { name: 'My Events', icon: Calendar, path: '/my-events', overview: 'View and manage your events' },
-  { name: 'Add Event', icon: UserPlus, path: '/add-event', overview: 'Create and schedule a new event' },
+  { name: 'Add Event', icon: PlusCircle, path: '/add-event', overview: 'Create and schedule a new event' }, // Changed UserPlus to PlusCircle
   { name: 'Attendee List', icon: List, path: '/attendee-list', overview: 'Check the list of all attendees' },
-  { name: 'Update Event', icon: PlusCircle, path: '/update-event', overview: 'Update created events' },
+  { name: 'Update Event', icon: CalendarPlus, path: '/update-event', overview: 'Update created events' }, // Changed PlusCircle to Calendar
   { name: 'Delete Event', icon: Trash, path: '/delete-event', overview: 'Delete created events' }
 ];
 

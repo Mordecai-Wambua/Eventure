@@ -1,13 +1,18 @@
 import { useState, useEffect } from 'react';
 import Avatar from 'react-avatar';
 import useAuthHeader from 'react-auth-kit/hooks/useAuthHeader';
-import { Menu } from 'lucide-react';
+import useSignOut from 'react-auth-kit/hooks/useSignOut';
+import { useNavigate } from 'react-router-dom';
+import { ChevronLeft, User, LogOut } from 'lucide-react';
 
-// eslint-disable-next-line react/prop-types
-const Header = ({ toggleSidebar }) => {
+ 
+const Header = () => {
   const apiLink = import.meta.env.VITE_SERVER_API;
   const [userProfile, setUserProfile] = useState(null);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState(false);
   const authHeader = useAuthHeader();
+  const signOut = useSignOut();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -49,19 +54,27 @@ const Header = ({ toggleSidebar }) => {
   const userName = userProfile?.name || userProfile?.username || 'User';
   const userAvatarUrl = userProfile?.avatar || '';
 
+  const toggleSubmenu = () => setIsSubmenuOpen(!isSubmenuOpen);
+
+  const handleSignOut = () => {
+    signOut();
+    navigate('/');
+    console.log('User signed out');
+  };
+
   return (
     <header className='flex items-center justify-between p-4 bg-white shadow-md'>
       <div className='flex items-center space-x-4'>
         <button
-          onClick={toggleSidebar}
-          className='p-2 rounded-md hover:bg-gray-200 transition-colors duration-200 md:hidden'
+          onClick={() => navigate('/organizer')}
+          className='p-2 rounded-md hover:bg-gray-200 transition-colors duration-200'
         >
-          <Menu size={24} />
+          <ChevronLeft size={24} />
         </button>
-        <div className='hidden md:block w-16'></div> {/* Spacer for larger screens */}
+        <div className='hidden md:block w-16'></div>
       </div>
       <div className='flex-1 flex flex-col sm:flex-row sm:items-center justify-center sm:justify-start space-y-2 sm:space-y-0 sm:space-x-4 ml-4 sm:ml-0'>
-        <h1 className='text-sm sm:text-base md:text-lg lg:text-xl font-semibold  text-center sm:text-left'>
+        <h1 className='text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-center sm:text-left'>
           {getGreeting()}, {userName}
         </h1>
         {userProfile?.role === 'organizer' && (
@@ -70,9 +83,38 @@ const Header = ({ toggleSidebar }) => {
           </div>
         )}
       </div>
-      <div className='flex items-center space-x-2'>
-        <span className='text-gray-600 text-sm sm:text-base hidden sm:inline'>{userName}</span>
-        <Avatar name={userName} src={userAvatarUrl} size='40' round={true} />
+
+      <div
+        className='relative'
+        onMouseEnter={() => setIsSubmenuOpen(true)}
+        onMouseLeave={() => setIsSubmenuOpen(false)}
+      >
+        <div
+          className='flex items-center space-x-2 cursor-pointer'
+          onClick={toggleSubmenu}
+        >
+          <span className='text-gray-600 text-sm sm:text-base hidden sm:inline'>{userName}</span>
+          <Avatar name={userName} src={userAvatarUrl} size='40' round={true} />
+        </div>
+
+        {isSubmenuOpen && (
+          <div className='absolute right-0 w-48 bg-white rounded-lg shadow-lg z-10'>
+            <ul className='py-2'>
+              <li
+                className='flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer'
+                onClick={() => navigate('/my-profile')}
+              >
+                <User className='mr-2' size={16} /> Profile
+              </li>
+              <li
+                className='flex items-center px-4 py-2 hover:bg-gray-100 cursor-pointer'
+                onClick={handleSignOut}
+              >
+                <LogOut className='mr-2' size={16} /> Sign Out
+              </li>
+            </ul>
+          </div>
+        )}
       </div>
     </header>
   );

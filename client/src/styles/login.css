@@ -14,17 +14,16 @@ a:hover {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(55, 34, 209, 0.2);
 }
 
 .login-box {
   position: relative;
-  width: 450px;
-  border: 3px solid var(--primary-color);
+  width: 420px;
   border-radius: 15px;
   padding: 7.5em 2.5em 4em 2.5em;
-  background-color: #ffffff;
-  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);
+  background-color: #cbc8f2;
+  box-shadow: 0px 0px 10px 2px rgba(86, 65, 208, 0.3);
 }
 
 .login-header {
@@ -35,39 +34,13 @@ a:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--primary-color);
   width: 140px;
   height: 70px;
-  border-radius: 0 0 20px 20px;
 }
 
 .login-header span {
   font-size: 30px;
-  color: var(--black-color);
-}
-
-.login-header::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -30px;
-  width: 30px;
-  height: 30px;
-  border-top-right-radius: 50%;
-  background: transparent;
-  box-shadow: 15px 0 0 0 var(--primary-color);
-}
-
-.login-header::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: -30px;
-  width: 30px;
-  height: 30px;
-  border-top-left-radius: 50%;
-  background: transparent;
-  box-shadow: -15px 0 0 0 var(--primary-color);
+  color: rgb(90, 45, 45);
 }
 
 .input_box {
@@ -85,7 +58,7 @@ a:hover {
   background: transparent;
   color: #000000;
   padding-inline: 20px 50px;
-  border: 2px solid var(--primary-color);
+  border: 2px solid rgb(73, 92, 188);
   border-radius: 30px;
   outline: none;
 }
@@ -107,7 +80,7 @@ a:hover {
   top: -10px;
   left: 20px;
   font-size: 14px;
-  background-color: var(--primary-color);
+  background-color: blue;
   border-radius: 30px;
   color: black;
   padding: 0 10px;
@@ -161,4 +134,26 @@ a {
   .login-box {
     padding: 7.5em 1.5em 4em 2.5em;
   }
+}
+
+
+
+.chevron-container {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+.chevron-icon {
+  cursor: pointer;
+  font-size: 24px;
+  color: #333; /* Customize the color */
+}
+
+
+
+.error-message {
+  color: red;
+  text-align: center;
+  margin-bottom: 10px;
 }

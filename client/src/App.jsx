@@ -1,7 +1,6 @@
 import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Event from './pages/Event';
-import Admin from './pages/Admin';
 import Login from './pages/Login';
 import Organizer from './pages/Organizer';
 import AddEvent from './organizer_pages/AddEvent';
@@ -27,7 +26,6 @@ function App() {
       <Route path='/' element={<Home />} />
       <Route path='/events' element={<Event />} />
       <Route path='/login' element={<Login />} />
-      <Route path='/admin' element={<Admin />} />
 
       {/* Protected Routes */}
       <Route path='/organizer' element={<ProtectedRoute><Organizer /></ProtectedRoute>} />

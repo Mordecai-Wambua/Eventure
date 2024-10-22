@@ -2,6 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import '../styles/fonts.css';
 
 export default function Navigation() {
   const navigate = useNavigate();
@@ -48,9 +49,8 @@ export default function Navigation() {
 
   return (
     <nav className='container mx-auto px-4 lg:px-10 md:mt-4 mt-2 flex items-center justify-between'>
-      {/* Hamburger Menu for Small Screens */}
-      <div className='md:hidden flex items-center absolute right-2 border p-2 rounded-md'>
-        <button onClick={toggleMenu} className='text-black focus:outline-none'>
+      <div className='md:hidden flex items-center absolute right-8 border p-2 rounded-md mb-2 border-blue-400 bg-gray-100'>
+        <button onClick={toggleMenu} className='text-blue-400 focus:outline-none'>
           <svg
             className='w-6 h-6'
             fill='none'
@@ -67,11 +67,10 @@ export default function Navigation() {
           </svg>
         </button>
 
-        {/* Dropdown Menu */}
         {isMenuOpen && (
           <div
             ref={menuRef} // Attach ref to the menu
-            className='absolute right-0 mt-36 w-48 bg-white rounded-md shadow-lg z-10'
+            className='absolute right-0 mt-56 w-48 bg-white rounded-md shadow-lg z-10'
           >
             <ul className='py-2'>
               {navLinks.map((link, index) => (
@@ -83,7 +82,7 @@ export default function Navigation() {
                       offset={0}
                       duration={1000}
                       onClick={() => setIsMenuOpen(false)} // Close menu on item click
-                      className='block px-4 py-2 text-black hover:bg-gray-100'
+                      className='block px-4 py-2 text-black hover:bg-gray-100 kodchasan-regular'
                     >
                       {link.name}
                     </Link>
@@ -91,7 +90,7 @@ export default function Navigation() {
                     <NavLink
                       to={link.path}
                       onClick={() => setIsMenuOpen(false)} // Close menu on item click
-                      className='block px-4 py-2 text-black hover:bg-gray-100'
+                      className='block px-4 py-2 text-black hover:bg-gray-100 kodchasan-regular'
                     >
                       {link.name}
                     </NavLink>
@@ -101,7 +100,7 @@ export default function Navigation() {
               <li>
                 <button
                   onClick={handleSignIn}
-                  className='block px-4 py-2 text-black hover:bg-gray-100 w-full text-left'
+                  className='block px-4 py-2 text-black hover:bg-gray-100 w-full text-left kodchasan-regular'
                 >
                   Sign In
                 </button>
@@ -109,7 +108,7 @@ export default function Navigation() {
               <li>
                 <button
                   onClick={handleCreateEvent}
-                  className='block px-4 py-2 text-black hover:bg-gray-100 w-full text-left'
+                  className='block px-4 py-2 text-black hover:bg-gray-100 w-full text-left kodchasan-regular'
                 >
                   Get Started
                 </button>
@@ -119,9 +118,8 @@ export default function Navigation() {
         )}
       </div>
 
-      {/* Navigation Links */}
       <div className='hidden md:flex justify-center flex-1'>
-        <ul className='flex space-x-3 md:space-x-6'>
+        <ul className='flex space-x-3 md:space-x-6 mb-3'>
           {navLinks.map((link, index) => (
             <li key={index}>
               {link.isScroll ? (
@@ -130,14 +128,14 @@ export default function Navigation() {
                   smooth={true}
                   offset={0}
                   duration={1000}
-                  className='text-gray-700 cursor-pointer no-underline hover:text-blue-500 transition duration-300'
+                  className='text-gray-700 cursor-pointer no-underline hover:text-blue-500 transition duration-300 kodchasan-regular'
                 >
                   {link.name}
                 </Link>
               ) : (
                 <NavLink
                   to={link.path}
-                  className='text-gray-700 no-underline hover:text-blue-500 transition duration-300'
+                  className='text-gray-700 no-underline hover:text-blue-500 transition duration-300  kodchasan-regular'
                   activeclassname='font-bold text-blue-700'
                 >
                   {link.name}
@@ -149,16 +147,16 @@ export default function Navigation() {
       </div>
 
       {/* Desktop Buttons */}
-      <div className='hidden md:flex space-x-6'>
+      <div className='hidden md:flex space-x-6 mb-2'>
         <button
           onClick={handleSignIn}
-          className='bg-black text-white px-4 py-2 rounded'
+          className='bg-blue-500 text-white px-4 py-2 rounded-full kodchasan-regular hover:bg-blue-700'
         >
           Sign In
         </button>
         <button
           onClick={handleCreateEvent}
-          className='bg-inherit text-black px-4 py-2 rounded border'
+          className='bg-gray-100 text-blue-500 px-4 py-2 rounded-full border kodchasan-regular border-blue-400 hover:text-blue-800'
         >
           Get Started
         </button>

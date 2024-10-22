@@ -83,3 +83,12 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.geometric-background {
+  background-color: #f0f0f0;
+  background-image: 
+    radial-gradient(circle, #1E3A8A 2px, transparent 2px),
+    radial-gradient(circle, #1E40AF 2px, transparent 2px);
+  background-size: 40px 40px;
+  background-position: 0 0, 20px 20px;
+}

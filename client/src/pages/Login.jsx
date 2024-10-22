@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import  useSignIn  from 'react-auth-kit/hooks/useSignIn';
 import '../styles/login.css';
+import { ChevronLeft } from 'lucide-react';
 
 const Login = () => {
   const apiLink = import.meta.env.VITE_SERVER_API;
@@ -61,6 +62,9 @@ const Login = () => {
   return (
    
    <div className='wrapper'>
+     <div className='chevron-container'>
+        <ChevronLeft onClick={() => navigate('/')} className='chevron-icon' />
+      </div>
       <div className='login-box'>
         <div className='login-header'>
           <span>Login</span>

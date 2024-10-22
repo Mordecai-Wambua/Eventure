@@ -66,7 +66,7 @@ const AddEvent = () => {
     <div className='min-h-screen bg-gray-100'>
       <Header />
       <div className='flex justify-center p-4'>
-        <div className="w-2/3 lg:max-w-2/3 md:max-w-2/3 bg-white p-6 rounded-xl shadow-lg">
+        <div className="w-full lg:max-w-2/3 md:max-w-2/3 bg-white p-6 rounded-xl shadow-lg">
           <h2 className="mt-6 text-center text-2xl sm:text-3xl font-extrabold text-indigo-600">Create New Event</h2>
           {message && (
             <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md flex items-center">

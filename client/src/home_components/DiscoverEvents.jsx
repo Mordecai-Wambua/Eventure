@@ -80,7 +80,7 @@ export default function DiscoverEvents() {
     <div className="flex justify-center mt-20 flex-col items-center space-y-16 px-4 sm:px-6 lg:px-8 bg-inherit">
       <div className="max-w-2xl text-center space-y-6">
         <h1 className="kodchasan-bold text-lg md:text-2xl lg:text-5xl bg-clip-text text-transparent bg-gradient-to-r from-purple-600 to-pink-600">
-          Upcoming Events
+          Discover Events
         </h1>
         <p className="text-base sm:text-lg text-gray-600">
           Don&apos;t miss out on these exciting upcoming events near you
